@@ -1,27 +1,38 @@
 import React from "react";
 import store, { addTodo, removeTodo } from "./redux";
-import { Provider, connect } from "react-redux";
+import { connect } from "react-redux";
 
-let ManageTodos=(props)=> {
-  return (
-    <>
-      <button onClick={ ()=>{props.addTodo( "adddd" )} }>Add todo</button>
-      <p>Remove</p>
-    </>
-  );
+class ManageTodos extends React.Component{
+  render(){
+    return (
+      <>
+        <button
+          onClick={() => {
+            this.props.addTodo("adddd");
+          }}
+        >
+          Add todo
+        </button>
+        <p>Remove</p>
+      </>
+    );
+  }
 }
 
-let Todos=(props)=> {
-  return (
-    <>
-      {props.todos.map((todo,index) => (
-        <p key={index} >{todo}</p>
-      ))}
-    </>
-  );
+class Todos extends React.Component{
+  render(){
+    console.log(this.props);
+    return (
+      <>
+        {this.props.todos.map((todo, index) => (
+          <p key={index}>{todo}</p>
+        ))}
+      </>
+    );
+  }
 }
 
-const mapDispatchToProps = ()=> {
+const mapDispatchToProps = () => {
   return {
     addTodo: payload => {
       store.dispatch(addTodo(payload));
@@ -32,26 +43,30 @@ const mapDispatchToProps = ()=> {
   };
 };
 
-const mapStateToProps  = state => {
-  console.log(state);
+const mapStateToProps = state => {
   return {
     todos: state.todos
   };
 };
 
-Todos = connect(mapStateToProps,mapDispatchToProps)(Todos);
+const MTodos = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Todos);
 
-ManageTodos = connect(mapStateToProps,mapDispatchToProps)(ManageTodos);
-
+const MManageTodos = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ManageTodos);
 
 class App extends React.Component {
-  render(){
+  render() {
     return (
-      <Provider store={store}>
-        <Todos />
-        <ManageTodos />
-      </Provider>
-    )
+      <>
+        <MTodos />
+        <MManageTodos />
+      </>
+    );
   }
 }
 
