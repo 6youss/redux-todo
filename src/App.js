@@ -2,57 +2,46 @@ import React from "react";
 import store, { addTodo, removeTodo } from "./redux";
 import { Provider, connect } from "react-redux";
 
-let ManageTodos=(props)=> {
+const ManageTodos= (props)=> {
+  const { addTodo, removeTodo } = props;
   return (
     <>
-      <button onClick={ ()=>{props.addTodo( "adddd" )} }>Add todo</button>
-      <p>Remove</p>
+      <button onClick={() => addTodo( "adddd" )}>Add todo</button>
+      <button onClick={() => removeTodo(1)}>Remove</button>
     </>
   );
 }
 
-let Todos=(props)=> {
+const Todos=(props)=> {
   return (
     <>
       {props.todos.map((todo,index) => (
-        <p key={index} >{todo}</p>
+        <p key={index}>{todo}</p>
       ))}
     </>
   );
 }
 
-const mapDispatchToProps = ()=> {
-  return {
-    addTodo: payload => {
-      store.dispatch(addTodo(payload));
-    },
-    removeTodo: payload => {
-      store.dispatch(removeTodo(payload));
-    }
-  };
-};
+const mapDispatchToProps = { addTodo, removeTodo }
 
 const mapStateToProps  = state => {
-  console.log(state);
   return {
     todos: state.todos
   };
 };
 
-Todos = connect(mapStateToProps,mapDispatchToProps)(Todos);
+const ConnectedTodos = connect(mapStateToProps)(Todos);
 
-ManageTodos = connect(mapStateToProps,mapDispatchToProps)(ManageTodos);
+const ConnectedManageTodos = connect(null, mapDispatchToProps)(ManageTodos);
 
 
-class App extends React.Component {
-  render(){
+function App() {
     return (
       <Provider store={store}>
-        <Todos />
-        <ManageTodos />
+        <ConnectedTodos />
+        <ConnectedManageTodos />
       </Provider>
     )
-  }
 }
 
 export default App;

@@ -5,14 +5,17 @@ const initState = {
 };
 
 const reducer = (state = initState, action) => {
-  let new_state = { ...state };
   switch (action.type) {
     case "ADD_TODO":
-      new_state.todos.push(action.text);
-      return new_state;
+      return {
+        ...state,
+        todos: [...state.todos, action.text]
+      }
     case "REMOVE_TODO":
-      new_state.todos.slice(action.i, 1);
-      return new_state;
+      return {
+        ...state,
+        todos: state.todos.slice(action.i, 1),
+      }
     default:
       return state;
   }
