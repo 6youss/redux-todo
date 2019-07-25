@@ -1,21 +1,28 @@
 import React, { useState } from "react";
-import withConnect from "../withConnect";
+import { useDispatch } from 'react-redux'
 import { Button, Form, Container } from "react-bootstrap";
-
-const ManageTodos = props => {
+import { addTodo } from '../redux';
+const ManageTodos = () => {
   const [newTodo, setNewTodo] = useState("");
-  const { addTodo } = props;
+  const dispatch = useDispatch();
+  const handleChange = (e) => {
+    setNewTodo(e.target.value);
+  }
+  const handleAddTodo = () => {
+    dispatch(addTodo(newTodo));
+    setNewTodo('');
+  }
   return (
     <Container>
       <Form>
         <Form.Group>
           <Form.Label>Enter Todo</Form.Label>
-          <Form.Control rows="4" cols="50" onChange={e => setNewTodo(e.target.value)} />
+          <Form.Control rows="4" cols="50" onChange={handleChange} value={newTodo}/>
         </Form.Group>
-        <Button onClick={() => addTodo(newTodo)}>Add todo</Button>
+        <Button onClick={handleAddTodo}>Add todo</Button>
       </Form>
     </Container>
   );
 };
 
-export default withConnect(ManageTodos);
+export default ManageTodos;
